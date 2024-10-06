@@ -26,6 +26,10 @@ namespace VideoUpload.Controllers
 
         private void GetCatalogueFiles(List<Video> videos)
         {
+            //Create the Content directory if it does not exist
+            Directory.CreateDirectory(Path.Combine(_env.WebRootPath, "Content"));
+
+            //Build the path to the Content directory
             var path = Path.Combine(_env.WebRootPath, "Content");
             var files = Directory.GetFiles(path);
             int id = 0;
