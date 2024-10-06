@@ -1,9 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Upload";
 }
 <div>Choose MP4 files to upload to the Video Catalogue</div>
 
-<form enctype="multipart/form-data" method="post" action="/Home/UploadFile">
+<form enctype="multipart/form-data" method="post">
     <div class="mb-3">
         <label for="videoFiles" class="form-label">Browse File(s)</label>
         <input type="file" class="form-control" id="videoFiles" name="videoFiles" accept=".mp4" multiple>

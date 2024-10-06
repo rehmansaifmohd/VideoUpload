@@ -31,7 +31,7 @@ namespace VideoUpload.Controllers
 
             //Build the path to the Content directory
             var path = Path.Combine(_env.WebRootPath, "Content");
-            var files = Directory.GetFiles(path);
+            var files = Directory.GetFiles(path, "*.mp4");
             int id = 0;
 
             foreach (var file in files)
@@ -43,34 +43,54 @@ namespace VideoUpload.Controllers
             }
         }
 
-        public IActionResult Upload()
-        {
-            return View();
-        }
-
+        [HttpGet]
         [HttpPost]
-        public ActionResult UploadFile(IEnumerable<IFormFile> videoFiles)
+        public IActionResult Upload(IEnumerable<IFormFile> videoFiles)
         {
-            if (videoFiles != null && videoFiles.ToList().Count > 0)
+            try
             {
-                foreach (var file in videoFiles)
+                //Check if the form was posted with files
+                if (videoFiles != null && videoFiles.ToList().Count > 0)
                 {
-                    if (file != null && file.Length > 0)
+                    //Loop through the files to save them to the Content directory
+                    foreach (var file in videoFiles)
                     {
-                        var fileName = Path.GetFileName(file.FileName);
-                        var path = Path.Combine(_env.WebRootPath, "Content", fileName);
-
-                        using (var fileStream = new FileStream(path, FileMode.Append))
+                        //Check if the file is not null and has a length
+                        if (file != null && file.Length > 0)
                         {
-                            file.CopyTo(fileStream);
+                            //Get the file name and path
+                            var fileName = Path.GetFileName(file.FileName);
+                            var path = Path.Combine(_env.WebRootPath, "Content", fileName);
+
+                            //Save the file to the Content directory
+                            using (var fileStream = new FileStream(path, FileMode.Create))
+                            {
+                                file.CopyTo(fileStream);
+                                Console.WriteLine($"{fileName} uploaded");
+                            }
                         }
                     }
+
+                    //Return to the index page
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    //Return the upload page
+                    return View();
                 }
             }
+            catch (Exception ex)
+            {
+                //Add an error message to the model state
+                ModelState.AddModelError("File", "Error uploading file");
+                Console.WriteLine($"Error uploading file: {ex.Message}");
 
-            return RedirectToAction("Index");
+                //Return to the upload page
+                return RedirectToAction("Upload");
+            }
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

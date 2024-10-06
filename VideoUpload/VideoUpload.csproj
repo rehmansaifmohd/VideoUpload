@@ -7,7 +7,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\Content\" />
+	  <Content Update="wwwroot\Content\Dummy.txt">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 </Project>
