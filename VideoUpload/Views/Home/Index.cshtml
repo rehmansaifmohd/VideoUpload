@@ -1,0 +1,49 @@
+﻿@model IEnumerable<VideoUpload.Models.Video>;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>Select a video from the table to start playback</div>
+
+<div class="ratio ratio-16x9 border-dark">
+    <video class="w-100 h-100" controls id="videoPlayer" style="display: none;">
+        <source id="videoSource" src="" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Video Filename</th>
+            <th>File Size KB</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var video in Model)
+        {
+            <tr class="d-table-row" data-id="@video.Id" data-filepath="@Url.Content($"~/{video.FilePath}")">
+                <td>@video.Title</td>
+                <td>@video.Size</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var videoSource = document.getElementById("videoSource");
+        var videoPlayer = document.getElementById("videoPlayer");
+
+        $(".d-table-row").click(function () {
+            var id = $(this).data("id");
+            var filePath = $(this).data("filepath");
+            videoSource.src = filePath;
+            videoPlayer.load();
+            videoPlayer.play();
+            videoPlayer.style.display = "block";
+            videoHeader.style.display = "block";
+        });
+    });
+</script>
