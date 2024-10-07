@@ -22,18 +22,23 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 3. Navigate to the project directory:
 
-    cd VideoUpload\VideoUpload
+   ```sh
+   cd VideoUpload\VideoUpload
 
 ### Build and Run the Application
 
 1. Restore the dependencies:
 
-    dotnet restore
+   ```sh
+   dotnet restore
 
 2. Build the project:
 
-    dotnet build
+   ```sh
+   dotnet build
 
 3. Run the application:
 
-    dotnet run
+   ```sh
+   dotnet run
+
