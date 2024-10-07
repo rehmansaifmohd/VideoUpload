@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace VideoUpload
 {
@@ -11,9 +12,16 @@ namespace VideoUpload
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Configure the maximum request size
             builder.Services.Configure<FormOptions>(options =>
             {
                 options.MultipartBodyLengthLimit = 209715200; // 200 MB
+            });
+
+            // Configure Kestrel options
+            builder.Services.Configure<KestrelServerOptions>(config =>
+            {
+                config.Limits.MaxRequestBodySize = 209715200; // 200 MB
             });
 
             var app = builder.Build();
